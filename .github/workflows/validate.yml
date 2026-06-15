@@ -1,0 +1,28 @@
+name: Validate Harness
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run installer smoke tests
+        run: python3 scripts/test_install_harness.py
+
+      - name: Run repository validator
+        run: python3 scripts/validate_codex_port.py
+
+      - name: Run Cursor layout validator
+        run: python3 scripts/validate_cursor_port.py
